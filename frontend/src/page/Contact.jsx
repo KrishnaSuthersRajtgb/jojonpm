@@ -9,13 +9,13 @@ const CONTACT_INDEX = [
   {
     icon: MapPin,
     label: "Visit",
-    value: "JoJo Boutique, 12 Boutique Lane, Chennai, TN, India",
+    value: "JoJo Boutique, gobi,erode,tamilnadu",
   },
   {
     icon: Phone,
     label: "Call",
-    value: "+91 12345 67890",
-    href: "tel:+911234567890",
+    value: "+91 95973 00773",
+    href: "tel:+919597300773",
   },
   {
     icon: Mail,

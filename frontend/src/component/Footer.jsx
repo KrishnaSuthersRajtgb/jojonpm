@@ -57,12 +57,11 @@ const Footer = () => {
                 className="mt-1 text-[9.5px] uppercase tracking-[0.32em] text-[#D9AFAE]/80"
                 style={{ fontFamily: "'Jost', sans-serif" }}
               >
-                Premium Unisex Salon
+                Premium Product
               </span>
             </a>
             <p className="mt-4 max-w-sm text-[13px] leading-relaxed text-white/60">
-              Hair, skincare, bridal, and grooming for him and her —
-              crafted with care, every visit.
+              Fabric and Premium Cloths 
             </p>
             <div className="mt-6 flex items-center gap-3">
               {SOCIALS.map(({ icon: Icon, href, label }) => (
@@ -87,7 +86,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#D9AFAE]" strokeWidth={1.5} />
                 <span className="text-[13px] text-white/75">
-                  JoJo Boutique Premium Unisex Salon, Bhavani, Erode District, Tamil Nadu
+                  JoJo Boutique gobi,erode,tamilnadu
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -109,7 +108,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
           <p className="text-[12px] text-white/50">
-            © {new Date().getFullYear()} JoJo Boutique Premium Unisex Salon. All rights reserved.
+            © {new Date().getFullYear()} JoJo Boutique gobi,erode,tamilnadu. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#privacy" className="text-[12px] text-white/50 hover:text-[#D9AFAE]">
