@@ -1,8 +1,8 @@
 import React from "react";
-import { Gem, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
-// Uses same fonts as Navbar/Home:
-// <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+// Uses same fonts as Navbar/Home, plus Marcellus for the wordmark:
+// <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&family=Marcellus&display=swap" rel="stylesheet">
 
 // Brand icons removed from current lucide-react — inline SVGs instead
 const InstagramIcon = (props) => (
@@ -25,8 +25,6 @@ const TwitterIcon = (props) => (
   </svg>
 );
 
-
-
 const SOCIALS = [
   { icon: InstagramIcon, href: "#", label: "Instagram" },
   { icon: FacebookIcon, href: "#", label: "Facebook" },
@@ -36,33 +34,35 @@ const SOCIALS = [
 const Footer = () => {
   return (
     <footer
-      className="bg-[#1F2937] text-white"
+      className="bg-[#4A1E1B] text-white"
       style={{ fontFamily: "'Jost', sans-serif" }}
     >
       {/* shimmer line, matches navbar/hero signature */}
       <div className="relative h-[2px] w-full overflow-hidden bg-white/10">
-        <div className="absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-[#7C3AED] to-transparent animate-[shimmer_5s_ease-in-out_infinite]" />
+        <div className="absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-[#D9AFAE] to-transparent animate-[shimmer_5s_ease-in-out_infinite]" />
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-16 md:px-10">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
           {/* Brand */}
           <div>
-            <a href="#home" className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
-                <Gem className="h-5 w-5 text-[#A78BFA]" strokeWidth={1.5} />
+            <a href="#home" className="flex flex-col leading-none">
+              <span
+                className="text-[24px] tracking-[0.08em] text-[#F5EDE6]"
+                style={{ fontFamily: "'Marcellus', serif" }}
+              >
+                VELVET
               </span>
               <span
-                className="text-[24px] leading-none tracking-wide text-white"
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                className="mt-1 text-[9.5px] uppercase tracking-[0.32em] text-[#D9AFAE]/80"
+                style={{ fontFamily: "'Jost', sans-serif" }}
               >
-                Jo<span className="text-[#A78BFA]">Jo</span>{" "}
-                <span className="font-medium">Boutique</span>
+                Premium Unisex Salon
               </span>
             </a>
-            <p className="mt-4 max-w-xs text-[13px] leading-relaxed text-white/60">
-              Ready-made pieces for everyday wear, and custom-made
-              outfits for your girl — fit, fabric, and finish, your way.
+            <p className="mt-4 max-w-sm text-[13px] leading-relaxed text-white/60">
+              Hair, skincare, bridal, and grooming for him and her —
+              crafted with care, every visit.
             </p>
             <div className="mt-6 flex items-center gap-3">
               {SOCIALS.map(({ icon: Icon, href, label }) => (
@@ -70,7 +70,7 @@ const Footer = () => {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-[#A78BFA] hover:text-[#A78BFA]"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-[#D9AFAE] hover:text-[#D9AFAE]"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -78,32 +78,28 @@ const Footer = () => {
             </div>
           </div>
 
-        
-
-       
-
           {/* Contact */}
-          <div>
+          <div className="md:justify-self-end md:text-left">
             <h4 className="mb-5 text-[12px] uppercase tracking-[0.16em] text-white/50">
               Get in Touch
             </h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#A78BFA]" strokeWidth={1.5} />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#D9AFAE]" strokeWidth={1.5} />
                 <span className="text-[13px] text-white/75">
-                  12 Boutique Lane, Chennai, TN, India
+                  Velvet Premium Unisex Salon, Bhavani, Erode District, Tamil Nadu
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="h-4 w-4 shrink-0 text-[#A78BFA]" strokeWidth={1.5} />
-                <a href="tel:+911234567890" className="text-[13px] text-white/75 hover:text-[#A78BFA]">
+                <Phone className="h-4 w-4 shrink-0 text-[#D9AFAE]" strokeWidth={1.5} />
+                <a href="tel:+911234567890" className="text-[13px] text-white/75 hover:text-[#D9AFAE]">
                   +91 12345 67890
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="h-4 w-4 shrink-0 text-[#A78BFA]" strokeWidth={1.5} />
-                <a href="mailto:hello@jojoboutique.com" className="text-[13px] text-white/75 hover:text-[#A78BFA]">
-                  hello@jojoboutique.com
+                <Mail className="h-4 w-4 shrink-0 text-[#D9AFAE]" strokeWidth={1.5} />
+                <a href="mailto:hello@velvetsalon.com" className="text-[13px] text-white/75 hover:text-[#D9AFAE]">
+                  hello@velvetsalon.com
                 </a>
               </li>
             </ul>
@@ -113,13 +109,13 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
           <p className="text-[12px] text-white/50">
-            © {new Date().getFullYear()} JoJo Boutique. All rights reserved.
+            © {new Date().getFullYear()} Velvet Premium Unisex Salon. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#privacy" className="text-[12px] text-white/50 hover:text-[#A78BFA]">
+            <a href="#privacy" className="text-[12px] text-white/50 hover:text-[#D9AFAE]">
               Privacy Policy
             </a>
-            <a href="#terms" className="text-[12px] text-white/50 hover:text-[#A78BFA]">
+            <a href="#terms" className="text-[12px] text-white/50 hover:text-[#D9AFAE]">
               Terms of Service
             </a>
           </div>

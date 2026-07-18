@@ -1,32 +1,37 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, Sparkles } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, ArrowUpRight, CheckCircle2 } from "lucide-react";
 
-// Uses same fonts as Navbar/Home/Footer/Collection/About:
-// <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+// Uses same fonts as Navbar/Home/Footer, plus Marcellus for ticket accents:
+// <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&family=Marcellus&display=swap" rel="stylesheet">
 
-const CONTACT_INFO = [
+const CONTACT_INDEX = [
   {
     icon: MapPin,
-    label: "Visit Us",
-    lines: ["12 Boutique Lane", "Chennai, TN, India"],
+    label: "Visit",
+    value: "JoJo Boutique, 12 Boutique Lane, Chennai, TN, India",
   },
   {
     icon: Phone,
-    label: "Call Us",
-    lines: ["+91 12345 67890"],
+    label: "Call",
+    value: "+91 12345 67890",
+    href: "tel:+911234567890",
   },
   {
     icon: Mail,
-    label: "Email Us",
-    lines: ["hello@jojoboutique.com"],
-  },
-  {
-    icon: Clock,
-    label: "Store Hours",
-    lines: ["Mon – Sat: 10am – 8pm", "Sunday: 11am – 6pm"],
+    label: "Email",
+    value: "hello@jojoboutique.com",
+    href: "mailto:hello@jojoboutique.com",
   },
 ];
+
+// Real weekly hours — drives both the printed hours line AND the live
+// open/closed status below, so it can never say something the schedule
+// doesn't actually support.
+const HOURS = {
+  weekday: { open: 10, close: 20 }, // Mon–Sat, 24hr clock
+  sunday: { open: 11, close: 18 },
+};
 
 const REASONS = [
   "General Inquiry",
@@ -37,29 +42,34 @@ const REASONS = [
 
 const easeClassy = [0.16, 1, 0.3, 1];
 
-const staggerParent = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: easeClassy } },
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easeClassy } },
+const staggerParent = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+};
+
+const getOpenStatus = () => {
+  const now = new Date();
+  const day = now.getDay(); // 0 = Sunday
+  const hour = now.getHours() + now.getMinutes() / 60;
+  const todays = day === 0 ? HOURS.sunday : HOURS.weekday;
+  const isOpen = hour >= todays.open && hour < todays.close;
+  const closeTime = todays.close > 12 ? `${todays.close - 12}pm` : `${todays.close}am`;
+  const openTime = todays.open > 12 ? `${todays.open - 12}pm` : `${todays.open}am`;
+  return { isOpen, openTime, closeTime };
 };
 
 const Contact = () => {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    reason: REASONS[0],
-    message: "",
-  });
+  const [form, setForm] = useState({ name: "", email: "", reason: REASONS[0], message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
+  const { isOpen, openTime, closeTime } = getOpenStatus();
 
-  const handleChange = (field) => (e) => {
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
-  };
+  const handleChange = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,187 +78,174 @@ const Contact = () => {
   };
 
   const fieldClass = (field) =>
-    `w-full rounded-xl border bg-white px-4 py-3 text-[14px] text-[#1F2937] outline-none transition-all duration-300 ${
-      focusedField === field
-        ? "border-[#7C3AED] shadow-[0_0_0_4px_rgba(124,58,237,0.1)]"
-        : "border-[#EDE9FE] hover:border-[#7C3AED]/40"
+    `w-full border-b bg-transparent px-0.5 py-2.5 text-[14px] text-[#2C1810] placeholder-[#2C1810]/30 outline-none transition-colors duration-300 ${
+      focusedField === field ? "border-[#8B6B2E]" : "border-[#2C1810]/15 hover:border-[#2C1810]/30"
     }`;
 
   return (
-    <div className="overflow-hidden bg-white text-[#1F2937]" style={{ fontFamily: "'Jost', sans-serif" }}>
-      {/* ---------- Page header ---------- */}
-      <section className="relative overflow-hidden bg-[#EDE9FE]">
-        {/* floating decorative accents */}
-        <motion.span
-          className="absolute left-[8%] top-10"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <Sparkles className="h-5 w-5 text-[#7C3AED]/30" />
-        </motion.span>
-        <motion.span
-          className="absolute right-[12%] top-24"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
-        >
-          <Sparkles className="h-4 w-4 text-[#7C3AED]/25" />
-        </motion.span>
-        <motion.span
-          className="absolute right-[25%] bottom-8"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2.4 }}
-        >
-          <Sparkles className="h-3.5 w-3.5 text-[#7C3AED]/20" />
-        </motion.span>
-
+    <div className="overflow-hidden bg-[#F5EDE6] text-[#2C1810]" style={{ fontFamily: "'Jost', sans-serif" }}>
+      {/* ---------- Split hero: photo panel + numbered contact index ---------- */}
+      <section className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr]">
+        {/* Photo panel */}
         <motion.div
-          initial="hidden"
-          animate="show"
-          variants={staggerParent}
-          className="mx-auto max-w-7xl px-6 py-16 text-center md:px-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, ease: easeClassy }}
+          className="relative min-h-[280px] md:min-h-[640px]"
         >
-          <motion.span
-            variants={fadeUp}
-            className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-[11px] uppercase tracking-[0.18em] text-[#7C3AED]"
-          >
-            Get in Touch
-          </motion.span>
-          <motion.h1
-            variants={fadeUp}
-            className="text-[38px] leading-tight text-[#1F2937] md:text-[48px]"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            We'd Love to Hear From You
-          </motion.h1>
-          <motion.p
-            variants={fadeUp}
-            className="mx-auto mt-3 max-w-md text-[14px] text-[#1F2937]/70"
-          >
-            Questions about an order, a custom fit, or just want to
-            say hello — reach out any time.
-          </motion.p>
+          <img
+            src="https://img.magnific.com/free-photo/happy-young-woman-uses-her-phone-posing-with-colorful-shopping-bags-studio_8353-5606.jpg?semt=ais_hybrid&w=740&q=80"
+            alt="Inside JoJo Boutique"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#2C1810]/50 via-transparent to-transparent" />
+
+          {/* live status chip, anchored on the image */}
+          <div className="absolute bottom-6 left-6 flex items-center gap-2.5 rounded-full bg-[#F5EDE6]/95 px-4 py-2 backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              {isOpen && (
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7A8B5C] opacity-60" />
+              )}
+              <span
+                className={`relative inline-flex h-2 w-2 rounded-full ${
+                  isOpen ? "bg-[#7A8B5C]" : "bg-[#B0413E]"
+                }`}
+              />
+            </span>
+            <span className="text-[11.5px] uppercase tracking-[0.1em] text-[#2C1810]">
+              {isOpen ? `Open now · until ${closeTime}` : `Closed · opens ${openTime}`}
+            </span>
+          </div>
         </motion.div>
 
-        <div className="relative h-[2px] w-full overflow-hidden bg-white/40">
-          <div className="absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-[#7C3AED] to-transparent animate-[shimmer_5s_ease-in-out_infinite]" />
+        {/* Numbered contact index */}
+        <div className="flex flex-col justify-center px-6 py-16 md:px-14 md:py-0">
+          <motion.div initial="hidden" animate="show" variants={staggerParent}>
+            <motion.span
+              variants={fadeUp}
+              className="mb-4 inline-block text-[11px] uppercase tracking-[0.34em] text-[#8B6B2E]"
+            >
+              Get in Touch
+            </motion.span>
+            <motion.h1
+              variants={fadeUp}
+              className="text-[38px] leading-[1.08] text-[#2C1810] md:text-[46px]"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            >
+              Let's talk about
+              <br />
+              your next order.
+            </motion.h1>
+
+            <motion.ul variants={staggerParent} className="mt-10 divide-y divide-[#2C1810]/10 border-t border-[#2C1810]/10">
+              {CONTACT_INDEX.map(({ icon: Icon, label, value, href }, i) => (
+                <motion.li key={label} variants={fadeUp} className="group flex items-start gap-5 py-5">
+                  <span
+                    className="mt-0.5 shrink-0 text-[12px] tabular-nums text-[#2C1810]/35"
+                    style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                  >
+                    0{i + 1}
+                  </span>
+                  <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[#8B6B2E]" strokeWidth={1.25} />
+                  <div className="flex-1">
+                    <p className="text-[10.5px] uppercase tracking-[0.16em] text-[#2C1810]/45">{label}</p>
+                    {href ? (
+                      <a href={href} className="mt-1 block text-[14.5px] text-[#2C1810] hover:text-[#8B6B2E]">
+                        {value}
+                      </a>
+                    ) : (
+                      <p className="mt-1 text-[14.5px] text-[#2C1810]">{value}</p>
+                    )}
+                  </div>
+                </motion.li>
+              ))}
+              <motion.li variants={fadeUp} className="flex items-start gap-5 py-5">
+                <span
+                  className="mt-0.5 shrink-0 text-[12px] tabular-nums text-[#2C1810]/35"
+                  style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                >
+                  04
+                </span>
+                <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#8B6B2E]" strokeWidth={1.25} />
+                <div>
+                  <p className="text-[10.5px] uppercase tracking-[0.16em] text-[#2C1810]/45">Store Hours</p>
+                  <p className="mt-1 text-[14.5px] text-[#2C1810]">Mon – Sat: 10am – 8pm</p>
+                  <p className="text-[14.5px] text-[#2C1810]">Sunday: 11am – 6pm</p>
+                </div>
+              </motion.li>
+            </motion.ul>
+          </motion.div>
         </div>
       </section>
 
-      {/* ---------- Contact info cards ---------- */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-10">
+      {/* ---------- Consultation ticket ---------- */}
+      <section className="bg-[#5C2620] px-6 py-24 md:px-10">
         <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={staggerParent}
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.8, ease: easeClassy }}
+          className="mx-auto max-w-4xl"
         >
-          {CONTACT_INFO.map(({ icon: Icon, label, lines }) => (
-            <motion.div
-              key={label}
-              variants={fadeUp}
-              whileHover={{ y: -6 }}
-              transition={{ duration: 0.4, ease: easeClassy }}
-              className="group rounded-2xl border border-[#EDE9FE] p-7 transition-colors duration-300 hover:border-[#7C3AED]/40 hover:shadow-[0_20px_40px_-24px_rgba(124,58,237,0.25)]"
-            >
-              <motion.span
-                whileHover={{ rotate: 8 }}
-                transition={{ type: "spring", stiffness: 260, damping: 14 }}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EDE9FE] transition-colors duration-500 group-hover:bg-[#7C3AED]"
-              >
-                <Icon
-                  className="h-5 w-5 text-[#7C3AED] transition-colors duration-500 group-hover:text-white"
-                  strokeWidth={1.5}
-                />
-              </motion.span>
-              <h3
-                className="mt-5 text-[18px] text-[#1F2937]"
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
-              >
-                {label}
-              </h3>
-              <div className="mt-2 space-y-0.5">
-                {lines.map((line) => (
-                  <p key={line} className="text-[13px] leading-relaxed text-[#1F2937]/65">
-                    {line}
-                  </p>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* ---------- Form + map ---------- */}
-      <section className="bg-[#EDE9FE]/40 py-20">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 md:grid-cols-2 md:px-10">
-          {/* Form */}
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerParent}
-          >
-            <motion.h2
-              variants={fadeUp}
-              className="text-[28px] text-[#1F2937]"
+          <div className="mb-10 text-center">
+            <span className="mb-3 inline-block text-[11px] uppercase tracking-[0.34em] text-[#D9AFAE]">
+              Book a Consultation
+            </span>
+            <h2
+              className="text-[30px] text-[#F5EDE6]"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              Send a Message
-            </motion.h2>
-            <motion.p variants={fadeUp} className="mt-2 text-[14px] text-[#1F2937]/65">
-              We typically reply within one business day.
-            </motion.p>
+              Tell Us What You Have in Mind
+            </h2>
+          </div>
+
+          {/* Ticket card: form stub + perforated tear line + branded counterfoil */}
+          <div className="relative grid grid-cols-1 overflow-hidden rounded-2xl bg-[#F5EDE6] shadow-2xl shadow-black/30 md:grid-cols-[1fr_auto_240px]">
+            {/* notches for the perforation illusion */}
+            <div className="absolute left-[calc(100%-256px)] top-0 hidden h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#5C2620] md:block" />
+            <div className="absolute left-[calc(100%-256px)] bottom-0 hidden h-5 w-5 -translate-x-1/2 translate-y-1/2 rounded-full bg-[#5C2620] md:block" />
 
             <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
                   key="success"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, ease: easeClassy }}
-                  className="mt-8 flex items-start gap-3 rounded-2xl border border-[#7C3AED]/20 bg-white p-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex flex-col items-start justify-center gap-3 p-9 md:p-12"
                 >
-                  <motion.span
-                    initial={{ scale: 0, rotate: -30 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ duration: 0.6, delay: 0.15, ease: easeClassy }}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#EDE9FE]"
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#8B6B2E]/10">
+                    <CheckCircle2 className="h-5 w-5 text-[#8B6B2E]" strokeWidth={1.5} />
+                  </span>
+                  <p className="text-[19px] text-[#2C1810]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                    Request received
+                  </p>
+                  <p className="text-[13.5px] leading-relaxed text-[#2C1810]/60">
+                    Thanks, {form.name || "there"} — we've noted your request and
+                    will reach out shortly to confirm details.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSubmitted(false);
+                      setForm({ name: "", email: "", reason: REASONS[0], message: "" });
+                    }}
+                    className="mt-2 text-[12px] uppercase tracking-[0.14em] text-[#8B6B2E] hover:underline"
                   >
-                    <CheckCircle2 className="h-5 w-5 text-[#7C3AED]" strokeWidth={1.5} />
-                  </motion.span>
-                  <div>
-                    <p className="text-[15px] font-medium text-[#1F2937]">
-                      Message sent
-                    </p>
-                    <p className="mt-1 text-[13px] text-[#1F2937]/65">
-                      Thanks, {form.name || "there"} — we've received your message
-                      and will get back to you soon.
-                    </p>
-                    <button
-                      onClick={() => {
-                        setSubmitted(false);
-                        setForm({ name: "", email: "", reason: REASONS[0], message: "" });
-                      }}
-                      className="mt-4 text-[12px] uppercase tracking-[0.12em] text-[#7C3AED] hover:underline"
-                    >
-                      Send another message
-                    </button>
-                  </div>
+                    Start another request
+                  </button>
                 </motion.div>
               ) : (
                 <motion.form
                   key="form"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                  exit={{ opacity: 0 }}
                   onSubmit={handleSubmit}
-                  className="mt-8 space-y-5"
+                  className="space-y-6 p-9 md:p-12"
                 >
-                  <motion.div variants={fadeUp} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
-                      <label className="mb-1.5 block text-[12px] uppercase tracking-[0.1em] text-[#1F2937]/60">
-                        Your Name
+                      <label className="mb-1 block text-[10.5px] uppercase tracking-[0.14em] text-[#2C1810]/45">
+                        Name
                       </label>
                       <input
                         type="text"
@@ -262,8 +259,8 @@ const Contact = () => {
                       />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-[12px] uppercase tracking-[0.1em] text-[#1F2937]/60">
-                        Email Address
+                      <label className="mb-1 block text-[10.5px] uppercase tracking-[0.14em] text-[#2C1810]/45">
+                        Email
                       </label>
                       <input
                         type="email"
@@ -276,11 +273,11 @@ const Contact = () => {
                         className={fieldClass("email")}
                       />
                     </div>
-                  </motion.div>
+                  </div>
 
-                  <motion.div variants={fadeUp}>
-                    <label className="mb-1.5 block text-[12px] uppercase tracking-[0.1em] text-[#1F2937]/60">
-                      Reason for Contact
+                  <div>
+                    <label className="mb-1 block text-[10.5px] uppercase tracking-[0.14em] text-[#2C1810]/45">
+                      Service
                     </label>
                     <select
                       value={form.reason}
@@ -295,58 +292,62 @@ const Contact = () => {
                         </option>
                       ))}
                     </select>
-                  </motion.div>
+                  </div>
 
-                  <motion.div variants={fadeUp}>
-                    <label className="mb-1.5 block text-[12px] uppercase tracking-[0.1em] text-[#1F2937]/60">
+                  <div>
+                    <label className="mb-1 block text-[10.5px] uppercase tracking-[0.14em] text-[#2C1810]/45">
                       Message
                     </label>
                     <textarea
                       required
-                      rows={5}
+                      rows={3}
                       value={form.message}
                       onChange={handleChange("message")}
                       onFocus={() => setFocusedField("message")}
                       onBlur={() => setFocusedField(null)}
-                      placeholder="Tell us what you need — measurements, fabric preference, or just a question."
+                      placeholder="Preferred date, or anything we should know"
                       className={`resize-none ${fieldClass("message")}`}
                     />
-                  </motion.div>
+                  </div>
 
                   <motion.button
-                    variants={fadeUp}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="group relative flex items-center gap-2 overflow-hidden rounded-full bg-[#7C3AED] px-7 py-3.5 text-[13px] uppercase tracking-[0.14em] text-white"
+                    className="group flex items-center gap-2 rounded-full border border-[#5C4322] bg-gradient-to-b from-[#E8C377] via-[#C89B4A] to-[#8B6B2E] px-7 py-3 text-[12.5px] font-medium uppercase tracking-[0.14em] text-white shadow-md transition-all hover:from-[#F0D08E] hover:via-[#D6AC5E] hover:to-[#9A7936]"
                   >
-                    <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                    <span className="relative">Send Message</span>
-                    <Send className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+                    Submit Request
+                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </motion.button>
                 </motion.form>
               )}
             </AnimatePresence>
-          </motion.div>
 
-          {/* Map */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.9, ease: easeClassy }}
-            whileHover={{ y: -4 }}
-            className="relative min-h-[320px] overflow-hidden rounded-3xl bg-white shadow-lg shadow-[#7C3AED]/10 transition-shadow duration-500 hover:shadow-2xl hover:shadow-[#7C3AED]/20 md:min-h-full"
-          >
-            <iframe
-              title="JoJo Boutique location"
-              src="https://www.google.com/maps?q=Chennai,Tamil%20Nadu,India&output=embed"
-              className="h-full w-full min-h-[320px] border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </motion.div>
-        </div>
+            {/* dashed tear line */}
+            <div className="hidden border-l border-dashed border-[#2C1810]/20 md:block" />
+            <div className="my-4 border-t border-dashed border-[#2C1810]/20 md:hidden" />
+
+            {/* counterfoil / stub */}
+            <div className="flex flex-col justify-between bg-[#EDE2D3] p-8">
+              <div>
+                <span
+                  className="text-[18px] tracking-[0.06em] text-[#2C1810]"
+                  style={{ fontFamily: "'Marcellus', serif" }}
+                >
+                  JOJO
+                </span>
+                <p className="mt-1 text-[9.5px] uppercase tracking-[0.28em] text-[#2C1810]/50">
+                  Custom Order Slip
+                </p>
+              </div>
+              <div className="mt-8 space-y-3 text-[12px] text-[#2C1810]/65">
+                <p>No fee to submit</p>
+                <p>Reply within one business day</p>
+                <p>Chennai, Tamil Nadu</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
     </div>
   );
