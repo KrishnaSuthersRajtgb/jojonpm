@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Gem,
@@ -55,64 +56,63 @@ const CATEGORIES = [
 const PRODUCTS = [
   {
     name: "Aria Wrap Dress",
-    // price: "$128",
+    price: "₹9,999",
     detail: "Washed cotton-linen, off-shoulder frill",
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxKYVvDcif8kk00YdCgM_tBeEYM5GRLIIfId0YKii19Q&s",
+    img: "...",
     tag: "Ready-Made",
   },
   {
     name: "Petal Party Frock",
-    price: "$74",
+    price: "₹5,999",
     detail: "Girls' occasion set, made to measure",
-    img: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=500&q=80",
+    img: "...",
     tag: "Customizable",
   },
   {
     name: "Nova Silk Scarf",
-    price: "$56",
+    price: "₹4,499",
     detail: "Hand-rolled edge, mulberry silk",
-    img: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=500&q=80",
+    img: "...",
     tag: "Ready-Made",
   },
   {
     name: "Blossom Girls Lehenga",
-    price: "$98",
+    price: "₹7,999",
     detail: "Hand-block print, adjustable waist",
-    img: "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=500&q=80",
+    img: "...",
     tag: "Customizable",
   },
   {
     name: "Linden Linen Set",
-    price: "$142",
+    price: "₹11,499",
     detail: "Two-piece, breathable heavyweight linen",
-    img: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&q=80",
+    img: "...",
     tag: "Ready-Made",
   },
   {
     name: "Marigold Anarkali (Girls)",
-    price: "$89",
+    price: "₹7,299",
     detail: "Layered flare, festive gold trim",
-    img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&q=80",
+    img: "...",
     tag: "Customizable",
   },
   {
     name: "Willow Midi Skirt",
-    price: "$68",
+    price: "₹5,499",
     detail: "Bias-cut, hand-finished hem",
-    img: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500&q=80",
+    img: "...",
     tag: "Ready-Made",
   },
   {
     name: "Sable Girls Co-ord",
-    price: "$81",
+    price: "₹6,599",
     detail: "Matching top and shorts, sized to grow",
-    img: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=500&q=80",
+    img: "...",
     tag: "Customizable",
   },
 ];
-
 const PERKS = [
-  { icon: Truck, label: "Free shipping over $75" },
+  { icon: Truck, label: "Free shipping" },
   { icon: Scissors, label: "Custom fit for girls' wear" },
   { icon: ShieldCheck, label: "Secure checkout" },
   { icon: RefreshCcw, label: "Easy 14-day returns" },
@@ -415,6 +415,8 @@ const FranchiseForm = () => {
 };
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-[#6B2C28] text-[#F5EDE6]" style={{ fontFamily: "'Jost', sans-serif" }}>
       {/* ---------- Hero — #6B2C28 ---------- */}
@@ -560,7 +562,11 @@ const Home = () => {
           {CATEGORIES.map((cat) => (
             <motion.a
               key={cat.name}
-              href="#"
+              href="/collections"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/collections");
+              }}
               variants={fadeUp}
               whileHover="hover"
               className="group relative aspect-[16/10] overflow-hidden rounded-3xl ring-1 ring-white/10"
