@@ -62,11 +62,10 @@ const Navbar = () => {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: easeClassy }}
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-          scrolled
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
             ? "bg-[#6B2C28]/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(217,175,174,0.25)]"
             : "bg-[#6B2C28]"
-        }`}
+          }`}
       >
         {/* Shimmer line — signature element, matches Home hero */}
         <div className="relative h-[2px] w-full overflow-hidden bg-white/10">
@@ -81,7 +80,7 @@ const Navbar = () => {
               className="text-[24px] tracking-[0.08em] text-[#F5EDE6] transition-colors duration-300 group-hover:text-[#D9AFAE] md:text-[27px]"
               style={{ fontFamily: "'Marcellus', serif" }}
             >
-              VELVET
+              JOJO BOUTIQUE
             </span>
             <span
               className="mt-1 hidden text-[9.5px] uppercase tracking-[0.32em] text-[#D9AFAE]/80 sm:block"
@@ -102,10 +101,9 @@ const Navbar = () => {
                   to={link.to}
                   end={link.to === "/"}
                   className={({ isActive }) =>
-                    `relative block rounded-full px-4 py-2 text-[13px] font-light uppercase tracking-[0.16em] transition-colors duration-200 ${
-                      isActive
-                        ? "text-[#6B2C28]"
-                        : "text-[#F5EDE6]/75 hover:text-[#F5EDE6]"
+                    `relative block rounded-full px-4 py-2 text-[13px] font-light uppercase tracking-[0.16em] transition-colors duration-200 ${isActive
+                      ? "text-[#6B2C28]"
+                      : "text-[#F5EDE6]/75 hover:text-[#F5EDE6]"
                     }`
                   }
                 >
@@ -178,7 +176,7 @@ const Navbar = () => {
                   className="text-[20px] tracking-[0.06em] text-[#F5EDE6]"
                   style={{ fontFamily: "'Marcellus', serif" }}
                 >
-                  VELVET
+                  JOJO BOUTIQUE
                 </span>
                 <button
                   onClick={() => setIsOpen(false)}
@@ -204,10 +202,9 @@ const Navbar = () => {
                       to={link.to}
                       end={link.to === "/"}
                       className={({ isActive }) =>
-                        `block rounded-xl px-3 py-3 text-[15px] uppercase tracking-[0.14em] transition-colors ${
-                          isActive
-                            ? "bg-[#D9AFAE] text-[#6B2C28]"
-                            : "text-[#F5EDE6] hover:bg-white/10 hover:text-[#D9AFAE]"
+                        `block rounded-xl px-3 py-3 text-[15px] uppercase tracking-[0.14em] transition-colors ${isActive
+                          ? "bg-[#D9AFAE] text-[#6B2C28]"
+                          : "text-[#F5EDE6] hover:bg-white/10 hover:text-[#D9AFAE]"
                         }`
                       }
                     >

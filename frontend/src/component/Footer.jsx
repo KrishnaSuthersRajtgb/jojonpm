@@ -51,7 +51,7 @@ const Footer = () => {
                 className="text-[24px] tracking-[0.08em] text-[#F5EDE6]"
                 style={{ fontFamily: "'Marcellus', serif" }}
               >
-                VELVET
+                JoJo Boutique
               </span>
               <span
                 className="mt-1 text-[9.5px] uppercase tracking-[0.32em] text-[#D9AFAE]/80"
@@ -87,19 +87,19 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#D9AFAE]" strokeWidth={1.5} />
                 <span className="text-[13px] text-white/75">
-                  Velvet Premium Unisex Salon, Bhavani, Erode District, Tamil Nadu
+                  JoJo Boutique Premium Unisex Salon, Bhavani, Erode District, Tamil Nadu
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-4 w-4 shrink-0 text-[#D9AFAE]" strokeWidth={1.5} />
                 <a href="tel:+911234567890" className="text-[13px] text-white/75 hover:text-[#D9AFAE]">
-                  +91 12345 67890
+                  +91 9597300773
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-4 w-4 shrink-0 text-[#D9AFAE]" strokeWidth={1.5} />
-                <a href="mailto:hello@velvetsalon.com" className="text-[13px] text-white/75 hover:text-[#D9AFAE]">
-                  hello@velvetsalon.com
+                <a href="mailto:hello@jojo boutique.com" className="text-[13px] text-white/75 hover:text-[#D9AFAE]">
+                  hello@jojo boutique.com
                 </a>
               </li>
             </ul>
@@ -109,7 +109,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
           <p className="text-[12px] text-white/50">
-            © {new Date().getFullYear()} Velvet Premium Unisex Salon. All rights reserved.
+            © {new Date().getFullYear()} JoJo Boutique Premium Unisex Salon. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#privacy" className="text-[12px] text-white/50 hover:text-[#D9AFAE]">
